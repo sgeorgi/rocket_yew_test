@@ -28,19 +28,11 @@ fn rocket() -> _ {
 mod tests {
     use super::*;
     use rocket::http::Status;
-
-    mod test_helper {
-        use crate::rocket;
-        use rocket::local::blocking::Client;
-
-        pub fn client() -> Client {
-            Client::tracked(rocket()).expect("valid rocket instance")
-        }
-    }
+    use rocket::local::blocking::Client;
 
     #[test]
     fn test_index() {
-        let client = test_helper::client();
+        let client = Client::tracked(rocket()).expect("valid rocket instance");
         let response = client.get("/").dispatch();
         assert_eq!(response.status(), Status::Ok);
     }
@@ -51,7 +43,7 @@ mod tests {
             title: "Title".to_string(),
             body: "This is the body".to_string()
         };
-        let client = test_helper::client();
+        let client = Client::tracked(rocket()).expect("valid rocket instance");
         let response = client.get("/").dispatch();
         assert_eq!(response.into_json(), Some(msg));
     }
