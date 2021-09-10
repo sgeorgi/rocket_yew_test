@@ -19,6 +19,7 @@ fn index() -> Json<Test> {
     Json(msg)
 }
 
+//noinspection RsMainFunctionNotFound
 #[launch]
 fn rocket() -> _ {
     rocket::build().mount("/", routes![index])
